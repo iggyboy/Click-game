@@ -9,17 +9,24 @@ import BigMeme from "./components/BigMeme"
 class App extends React.Component {
   state = {
     Tiles,
-    validTiles: Tiles
+    validTiles: Tiles,
+    score: 0,
+    message: "Make your choice, adventurer!"
   }
   render() {
     console.log(this.state.validTiles)
     return (
       <div>
-        <Header></Header>
-        <BigMeme></BigMeme>
-        {this.state.Tiles.map(tile => (
-          <Card id={tile.id} img={tile.img} cb={this.clickHandler} />
-        ))}
+        <Header score={this.state.score}></Header>
+        <BigMeme message = {this.state.message}></BigMeme>
+        <div style={{
+          display: "flex",
+          justifyContent: "space-around"
+        }}>
+          {this.state.Tiles.map(tile => (
+            <Card id={tile.id} img={tile.img} cb={this.clickHandler} />
+          ))}
+        </div>
       </div>
     )
 
@@ -55,6 +62,8 @@ class App extends React.Component {
   reset = () => {
     console.log("reset")
     this.setState({ validTiles: Tiles })
+    this.setState({ score: 0 });
+    this.setState({message: "You chose... poorly!"})
   }
 
   shuffle = a => {
@@ -65,7 +74,9 @@ class App extends React.Component {
       a[i] = a[j];
       a[j] = x;
     }
-    this.setState({Tiles: a});
+    this.setState({ Tiles: a });
+    this.setState({score : this.state.score + 1})
+    this.setState({message: "Make your choice, adventurer!"})
   }
 }
 
